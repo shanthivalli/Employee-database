@@ -39,11 +39,10 @@ class Employee:
 
     def delete_rec(self, _id):
         if self.is_id_exist(_id):
-            return f'Record deleted: {self.emp_db.pop(_id)}'
-        return KeyError("There is no existing record for the specified id")
-
-
-
+            del_rec = self.emp_db.pop(_id)
+            print("Deleted record is:", del_rec)
+            return 'Record deleted'
+        raise KeyError("There is no existing record for the specified id")
 
 
 def print_operations():
@@ -70,14 +69,19 @@ if __name__ == '__main__':
         elif choice == 2:
             print(Employee.emp_db)
         elif choice == 3:
-            _id = input("Enter the id to be updated: ")
+            _id = input("Enter the id to be updated: \n")
             field = input('''Enter the field to be updated,
                             Firstname: f_name
                             Lastname : l_name
-                            Age      : age'''
+                            Age      : age\n'''
                           )
             value = input("Enter the value: ")
-            e1.update(_id, field, value)
-
-
-
+            print(e1.update(_id, field, value))
+        elif choice == 4:
+            _id = input("Enter the id to be deleted: \n")
+            e1.delete_rec(_id)
+        elif choice == 5:
+            break
+    f1 = open("db.json", "w")
+    json.dump(Employee.emp_db, f1)
+    f1.close()
