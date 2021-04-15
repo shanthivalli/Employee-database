@@ -14,7 +14,7 @@ class Employee:
         self.emp_id = emp_id
 
     def is_id_exist(self, _id=None):
-        if _id is None and self.emp_id in self.emp_db :
+        if _id is None and self.emp_id in self.emp_db:
             return True
         elif _id in self.emp_db:
             return True
@@ -29,20 +29,26 @@ class Employee:
                                         'age': self.age
                                         }
             return "Record Created Successfully"
-        raise KeyError("There exist a record with the id you have entered\n")
+        return "There exist a record with the id you have entered\n"
 
     def update(self, _id, field, value):
         if self.is_id_exist(_id):
             self.emp_db[_id].update({field: value})
             return "Updated successfully"
-        raise KeyError("There is no existing record for the specified id")
+        return "There is no existing record for the specified id\n"
 
     def delete_rec(self, _id):
         if self.is_id_exist(_id):
             del_rec = self.emp_db.pop(_id)
             print("Deleted record is:", del_rec)
-            return 'Record deleted'
-        raise KeyError("There is no existing record for the specified id")
+            return 'Record deleted\n'
+        return "There is no existing record for the specified id\n"
+
+    def display_rec(self, _id):
+        if self.is_id_exist(_id):
+            print(self.emp_db.get(_id))
+            return "Record Found\n"
+        return "There is no existing record for the specified id\n"
 
 
 def print_operations():
@@ -51,7 +57,8 @@ def print_operations():
     2.Display all the records
     3.Update a record
     4.Delete a record
-    5.Exit 
+    5.Display a particular record
+    6.Exit 
     """)
 
 
@@ -59,6 +66,7 @@ if __name__ == '__main__':
     while True:
         print_operations()
         choice = int(input())
+        e1 = Employee(None, "", "", None)
         if choice == 1:
             emp_id = input("Enter empId: ")
             f_name = input("Enter First Name: ")
@@ -79,8 +87,11 @@ if __name__ == '__main__':
             print(e1.update(_id, field, value))
         elif choice == 4:
             _id = input("Enter the id to be deleted: \n")
-            e1.delete_rec(_id)
+            print(e1.delete_rec(_id))
         elif choice == 5:
+            _id = input("Enter the id of the required record\n")
+            print(e1.display_rec(_id))
+        elif choice == 6:
             break
     f1 = open("db.json", "w")
     json.dump(Employee.emp_db, f1)
